@@ -39,10 +39,8 @@ namespace InitiumSolutionsTask.ViewModel
         public int NumberOfRooms { get; set; }
         [Display(Name ="Branches")]
 
-        public IEnumerable<HotelBranch> Branches { get; set; }
-        [Display(Name = "Available Rooms")]
+        public IEnumerable<HotelBranch> Branches { get; set; }= new List<HotelBranch>();
 
-        public IEnumerable<Room> AvailableRooms { get; set; }
         public List<RoomBookingViewModel> RoomBookings { get; set; } = new List<RoomBookingViewModel>();
     }
 }

@@ -8,10 +8,12 @@ namespace InitiumSolutionsTask.Controllers
     public class BookingController : Controller
     {
         private readonly IBookingService _bookingService;
-        private readonly ApplicationDbContext _context;
-        public BookingController(IBookingService bookingService)
+        private readonly IHotelBranchService _hotelBranchService;
+        public BookingController(IHotelBranchService hotelBranchService
+            ,IBookingService bookingService)
         {
             _bookingService = bookingService;
+            _hotelBranchService = hotelBranchService;
         }
         public async Task<IActionResult> Details(int id)
         {
@@ -33,14 +35,11 @@ namespace InitiumSolutionsTask.Controllers
             return View(bookings);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            // Initialize the view model with empty values and populate dropdowns
             var model = new BookingViewModel
             {
-                Branches = _context.HotelBranches.ToList(),
-                AvailableRooms = _context.Rooms.ToList(),
-               
+                Branches = await _hotelBranchService.GetAllBranchesAsync()
             };
 
             return View(model);
