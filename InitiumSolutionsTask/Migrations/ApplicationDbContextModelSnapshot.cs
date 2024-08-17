@@ -221,6 +221,7 @@ namespace InitiumSolutionsTask.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
+
                     b.Property<int>("NumberOfAdults")
                         .HasColumnType("int");
 
@@ -230,11 +231,16 @@ namespace InitiumSolutionsTask.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("RoomBookingId");
 
                     b.HasIndex("BookingId");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("RoomTypeId");
 
                     b.ToTable("RoomBookings");
 
@@ -245,7 +251,8 @@ namespace InitiumSolutionsTask.Migrations
                             BookingId = 1,
                             NumberOfAdults = 1,
                             NumberOfChildren = 0,
-                            RoomId = 1
+                            RoomId = 1,
+                            RoomTypeId = 1
                         },
                         new
                         {
@@ -253,7 +260,8 @@ namespace InitiumSolutionsTask.Migrations
                             BookingId = 2,
                             NumberOfAdults = 2,
                             NumberOfChildren = 1,
-                            RoomId = 2
+                            RoomId = 2,
+                            RoomTypeId = 1
                         });
                 });
 
@@ -350,9 +358,17 @@ namespace InitiumSolutionsTask.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("InitiumSolutionsTask.Models.RoomType", "RoomType")
+                        .WithMany()
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Booking");
 
                     b.Navigation("Room");
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("InitiumSolutionsTask.Models.Booking", b =>

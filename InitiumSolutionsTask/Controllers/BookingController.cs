@@ -1,19 +1,24 @@
-﻿using InitiumSolutionsTask.services;
+﻿using InitiumSolutionsTask.Models;
+using InitiumSolutionsTask.services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using InitiumSolutionsTask.ViewModel;
 
 namespace InitiumSolutionsTask.Controllers
 {
     public class BookingController : Controller
     {
+        private readonly IRoomTypeService _roomTypeService;
         private readonly IBookingService _bookingService;
         private readonly IHotelBranchService _hotelBranchService;
         public BookingController(IHotelBranchService hotelBranchService
-            ,IBookingService bookingService)
+            ,IBookingService bookingService,
+IRoomTypeService roomTypeService)
         {
             _bookingService = bookingService;
             _hotelBranchService = hotelBranchService;
+            _roomTypeService = roomTypeService;
         }
         public async Task<IActionResult> Details(int id)
         {
@@ -37,9 +42,19 @@ namespace InitiumSolutionsTask.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var roomTypes = _roomTypeService.GetAllRoomTypes()
+                                    .Select(rt => new SelectListItem
+                                    {
+                                        Value = rt.RoomTypeId.ToString(),
+                                        Text = rt.TypeName
+                                    }).ToList();
             var model = new BookingViewModel
             {
-                Branches = await _hotelBranchService.GetAllBranchesAsync()
+                Branches = await _hotelBranchService.GetAllBranchesAsync(),
+                RoomBookings = new List<RoomBookingViewModel> { new RoomBookingViewModel( roomTypes
+
+                   ) }
+                     
             };
 
             return View(model);
@@ -63,7 +78,6 @@ namespace InitiumSolutionsTask.Controllers
             }
        
 
-            // If model state is invalid or an error occurred, re-display the form
             return View(bookingViewModel);
         }
     }

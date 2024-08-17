@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace InitiumSolutionsTask.ViewModel
 {
@@ -7,6 +8,7 @@ namespace InitiumSolutionsTask.ViewModel
         [Required]
         
         public int RoomId { get; set; }
+        public int RoomTypeId { get; set; }
 
         [Required]
         [Display(Name = "Number of Adults")]
@@ -16,8 +18,18 @@ namespace InitiumSolutionsTask.ViewModel
         [Display(Name = "Number of Children")]
         public int NumberOfChildren { get; set; }
 
-        public string RoomType { get; set; }
+        public IEnumerable<SelectListItem> RoomTypes { get; set; } = new List<SelectListItem>();
         public Room Room { get; set; }
+        // Default constructor
+        public RoomBookingViewModel()
+        {
+        }
+
+        // Constructor with parameters (optional)
+        public RoomBookingViewModel(IEnumerable<SelectListItem> roomTypes)
+        {
+            RoomTypes = roomTypes;
+        }
     }
 
 }

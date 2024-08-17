@@ -25,10 +25,10 @@
                 };
                 _context.Customers.Add(customer);
                 await _context.SaveChangesAsync();
-                return (customer.CustomerId, false); // Not existing, newly created
+                return (customer.CustomerId, false); 
             }
 
-            return (customer.CustomerId, true); // Existing customer
+            return (customer.CustomerId, true); 
         }
 
         public Customer GetCustomerById(int id)

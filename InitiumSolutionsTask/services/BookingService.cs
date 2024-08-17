@@ -17,9 +17,9 @@
             return _context.Bookings
                 .Include(b => b.Customer)
                 .Include(b => b.HotelBranch)
-                .Include(b => b.RoomBookings) // Include this if you want to load related RoomBookings
-                .ThenInclude(rb => rb.Room)    // Include the Room if needed
-                .ThenInclude(r => r.RoomType)  // Include the RoomType if needed
+                .Include(b => b.RoomBookings) 
+                .ThenInclude(rb => rb.Room)    
+                .ThenInclude(r => r.RoomType)  
                 .ToList();
         }
 
